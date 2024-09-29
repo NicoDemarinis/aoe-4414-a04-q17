@@ -24,20 +24,19 @@ import sys  # argv
 from math import trunc
 
 # initialize script arguments
-year = float('nan')  
-month = float('nan') 
-day = float('nan') 
-hour = float('nan') 
-minute = float('nan') 
-sec = float('nan')
+year = int(0)  
+month = int(0) 
+day = int(0) 
+hour = int(0) 
+minute = int(0) 
 
 # parse script arguments
 if len(sys.argv)==7:
-  year = float(sys.argv[1])
-  month = float(sys.argv[2])
-  day = float(sys.argv[3])
-  hour = float(sys.argv[4])
-  minute = float(sys.argv[5])
+  year = int(sys.argv[1])
+  month = int(sys.argv[2])
+  day = int(sys.argv[3])
+  hour = int(sys.argv[4])
+  minute = int(sys.argv[5])
   sec = float(sys.argv[6])
 else:
   print(\
@@ -46,13 +45,14 @@ else:
   )
   exit()
 
-jd1 = (day - 32075.0) + 1461.0*((year+4800.0 + (month-14.0)/12.0)/4.0)
-jd2 = 367.0*((month-2.0-((month-14.0)/12.0) * 12.0)/12.0)
-jd3 = -3.0*(((year+4900.0+ ((month-14.0)/12.0))/100.0)/4.0)
-jd = trunc(jd1+jd2+jd3)
-jd_mn = jd - 0.5
-d_frac = (sec + (60.0*(month + 60.0*hour)))/86400.0
-jd_frac = jd_mn + d_frac
+jd = day - 32075 \
+   + trunc(1461 * (year + 4800 +  trunc((month-14)/12))/4) \
+   + trunc(367 * (month - 2 - (trunc((month-14)/12) *12 ))/12) \
+   - trunc(3 * trunc((year + 4900 + trunc((month-14)/12))/100)/4)
+
+jdmn = (jd) - 0.5
+dfrac = (sec + 60*(minute + 60*hour))/86400
+jd_frac = jdmn + dfrac
 
 # Print Statments
 print(jd_frac)
